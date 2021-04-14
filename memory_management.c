@@ -1,12 +1,12 @@
 #include "holberton.h"
 
 /**
- *_reallocchar - reallocates memory for char
+ *_realloc - reallocates memory for char
  *@ptr: a pointer to an array
  *
  *Return: pointer to new memory
  */
-char *_reallocchar(char *ptr)
+char *_realloc(char *ptr)
 {
 	int i = 0;
 	char *newptr;
@@ -34,16 +34,16 @@ char *_reallocchar(char *ptr)
  *free_all - frees all of the variables used
  *@line: the original line entered by user
  *@newline: line truncated to remove new line char
- *@tokenarray: array of token strings
+ *@t_array: array of token strings
  *
  *Return: void
  */
-void free_all(char *line, char *newline, char **tokenarray)
+void free_all(char *line, char *newline, char **t_array)
 {
-	free_tokens(tokenarray);
+	free_tokens(t_array);
 	free(line);
 	free(newline);
-	free(tokenarray);
+	free(t_array);
 }
 /**
  *free_list - frees a list_t list
@@ -51,9 +51,9 @@ void free_all(char *line, char *newline, char **tokenarray)
  *
  *Return: void
  */
-void free_list(path_t *head)
+void free_list(linked_t *head)
 {
-	path_t *nextnode;
+	linked_t *nextnode;
 
 	while (head != NULL)
 	{
@@ -64,19 +64,19 @@ void free_list(path_t *head)
 	}
 }
 /**
- *free_tokens - frees the tokens in the tokenarray
- *@tokenarray: array of tokens
+ *free_tokens - frees the tokens in the t_array
+ *@t_array: array of tokens
  *
  *Return: void
  */
-void free_tokens(char **tokenarray)
+void free_tokens(char **t_array)
 {
 	int i = 0;
 
-	while (tokenarray[i] != NULL)
+	while (t_array[i] != NULL)
 	{
-		free(tokenarray[i]);
+		free(t_array[i]);
 		i++;
 	}
-	free(tokenarray[i]);
+	free(t_array[i]);
 }

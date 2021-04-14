@@ -1,13 +1,13 @@
 #include "holberton.h"
 
 /**
- *findtensplaces - finds the multiplication factor of tens
+ *tens_places - finds the multiplication factor of tens
  *@i: the index of where a number starts in the string
  *@s: the string pointer
  *
  *Return: the tens multiplier
  */
-int findtensplaces(int i, char *s)
+int tens_places(int i, char *s)
 {
 	double tens = 1;
 
@@ -30,9 +30,9 @@ int _atoi(char *s)
 	int i = 0, j = 0;
 	int tens = 1;
 	unsigned int integer = 0;
-	int isnegative = 0;
-	int numnegs = 0;
-	int numpos = 0;
+	int is_neg = 0;
+	int neg_nums = 0;
+	int pos_nums = 0;
 
 	while (s[j] != '\0')
 	{
@@ -43,41 +43,41 @@ int _atoi(char *s)
 	while ((s[i] > '9' || s[i] < '0') && s[i] != '\0')
 	{
 		if (s[i] == '-')
-			numnegs++;
+			neg_nums++;
 		if (s[i] == '+')
-			numpos++;
+			pos_nums++;
 		i++;
 	}
 	if (s[i] == '\0')
 		return (0);
 
-	if ((numnegs % 2) != 0)
-		isnegative = 1;
+	if ((neg_nums % 2) != 0)
+		is_neg = 1;
 
-	tens = findtensplaces(i, s);
+	tens = tens_places(i, s);
 	while (s[i] >= '0' && s[i] <= '9')
 	{
 		integer += ((s[i] - '0') * tens);
 		tens /= 10;
 		i++;
 	}
-	if (isnegative == 1)
+	if (is_neg == 1)
 		integer *= -1;
 
 	return ((int) integer);
 }
 
 /**
- *printint - prints an integer
+ *print_int - prints an integer
  *@num: the number to turn into a string
  *
  *Return: number of characters printed to stdout
  */
-char *printint(int num)
+char *print_int(int num)
 {
 	int tens = 1;
 	int i = 0;
-	int tensit = num;
+	int tensint = num;
 	char *integer;
 
 	integer = malloc(33);
@@ -98,8 +98,8 @@ char *printint(int num)
 
 	while (tens != 0)
 	{
-		integer[i] = (tensit / tens) + '0';
-		tensit = tensit % tens;
+		integer[i] = (tensint / tens) + '0';
+		tensint = tensint % tens;
 		tens /= 10;
 		i++;
 	}

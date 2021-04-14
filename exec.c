@@ -1,7 +1,7 @@
 #include "holberton.h"
 
 /**
- *exec - executes a line of code in the shell
+ *execute_cmd - executes a line of code in the shell
  *@ar: the array of strings to execute
  *@env: the environment variable
  *@av: the array of command line argument strings
@@ -11,7 +11,7 @@
  *
  *Return: 0 on success, -1 on failure
  */
-int exec(char **ar, char **env, char **av, char *line, char *nline, int cdnum)
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cdnum)
 {
 	pid_t my_pid;
 	char *concat;
@@ -22,7 +22,7 @@ int exec(char **ar, char **env, char **av, char *line, char *nline, int cdnum)
 		return (-1);
 	if (env == NULL || *env == NULL)
 		return (-1);
-	if (check_builtins(ar, env, line, nline, cdnum) == 0)
+	if (checkBuiltins(ar, env, line, nline, cdnum) == 0)
 		return (0);
 	my_pid = fork();
 	if (my_pid == -1)
@@ -35,16 +35,16 @@ int exec(char **ar, char **env, char **av, char *line, char *nline, int cdnum)
 		if (ar[0][0] == '/')
 		{
 			if (stat(ar[0], &status) == -1)
-				no_file_er(av, ar, cdnum, line, nline);
+				error_handler(av, ar, cdnum, line, nline);
 			if (access(ar[0], X_OK) == -1)
-				no_file_er(av, ar, cdnum, line, nline);
+				error_handler(av, ar, cdnum, line, nline);
 			execve(ar[0], ar, NULL);
 		}
 		else
 		{
 			concat = path_handler(ar[0], env);
 			if (concat == NULL)
-				no_file_er(av, ar, cdnum, line, nline);
+				error_handler(av, ar, cdnum, line, nline);
 			else
 				execve(concat, ar, NULL);
 		}

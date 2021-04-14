@@ -1,20 +1,20 @@
 #include "holberton.h"
 
 /**
- *no_file_er - write an error message if file is not found
+ *error_handler - write an error message if file is not found
  *@argv: the array of passed in function argument strings
  *@ar: the array of tokens entered by the user
- *@cmdnum: the number of commands entered
+ *@cmdcount_int: the number of commands entered
  *@line: the command line entered by the user
  *@nline: the command line without the newline character
  *
  *Return: void
  */
-void no_file_er(char **argv, char **ar, int cmdnum, char *line, char *nline)
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline)
 {
 	char *num;
 
-	num = printint(cmdnum);
+	num = print_int(cmdcount_int);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, num, _strlen(num));

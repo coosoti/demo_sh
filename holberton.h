@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <errno.h>
-#define DELIMS " \t\0"
+#define DELIMITERS " \t\0"
 /**
  *struct path_s - linked list structure for PATH variable
  *@directory: directory to search
@@ -21,36 +21,33 @@ typedef struct path_s
 {
 	char *directory;
 	struct path_s *next;
-} path_t;
+} linked_t;
 
-void printprompt(void);
+void shellPrompt(void);
 int _strlen(char *buf);
-int printpath(char *path);
-void print_path(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
-char *str_concat(char *s1, char *s2);
-char *_concat(char *concatenate, char *s1, char *s2);
+char *_strconcat(char *s1, char *s2);
+char *_concatenate(char *concatenate, char *s1, char *s2);
 int _atoi(char *s);
 
-int check_builtins(char **ar, char **env, char *line, char *newline, int cdnum);
-char *printint(int num);
-path_t *create_ll(char *str);
-path_t *fill_list(char *str, path_t *list);
-void free_list(path_t *head);
-void free_tokens(char **tokenarray);
-void free_all(char *line, char *newline, char **tokenarray);
-int ctrld(char *line);
-void ctrlc(int signum);
-void no_file_er(char **argv, char **ar, int cmdnum, char *line, char *nline);
-int exit_op(char **array, char *line, char *newline, int cdnum);
-int cd_op(char **array, char **env);
-int env_op(char **env);
-char **tokensplit(char *line);
-int exec(char **ar, char **env, char **av, char *line, char *nline, int cdnum);
+int checkBuiltins(char **ar, char **env, char *line, char *newline, int cmd_count);
+char *print_int(int num);
+linked_t *create_linkedt(char *str);
+linked_t *addnodes_list(char *str, linked_t *list);
+void free_list(linked_t *head);
+void free_tokens(char **t_array);
+void free_all(char *line, char *newline, char **t_array);
+int ctrld_handler(char *line);
+void ctrlc_handler(int signum);
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline);
+int exit_handler(char **array, char *line, char *newline, int cmd_count);
+int cd_handler(char **array, char **env);
+int env_handler(char **env);
+char **tokenize(char *line);
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cmd_count);
 char *_getenv(const char *name, char **env);
-char **_realloccharss(char **ptr, int n);
-char *_reallocchar(char *ptr);
+char *_realloc(char *ptr);
 char *path_handler(char *str, char **env);
 
 #endif

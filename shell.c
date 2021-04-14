@@ -14,8 +14,8 @@ int main(int ac, char **av, char **env)
 {
 	char *line, *newline;
 	size_t len = 0;
-	ssize_t characters;
-	char **tokenarray;
+	ssize_t lineSize;
+	char **t_array;
 	int cmdnum = 0;
 
 	(void)ac, (void)av;
@@ -25,46 +25,46 @@ int main(int ac, char **av, char **env)
 		len = 0;
 		cmdnum++;
 		if (isatty(STDIN_FILENO) == 1)
-			printprompt();
-		signal(SIGINT, ctrlc);
-		characters = getline(&line, &len, stdin);
-		if (characters == EOF || characters == -1)
-			return (ctrld(line));
+			shellPrompt();
+		signal(SIGINT, ctrlc_handler);
+		lineSize = getline(&line, &len, stdin);
+		if (lineSize == EOF || lineSize == -1)
+			return (ctrld_handler(line));
 		if (line[0] == '\n')
 		{
 			free(line);
 			continue;
 		}
-		newline = _reallocchar(line);
+		newline = _realloc(line);
 		if (newline == NULL)
 		{
 			free(line);
 			return (0);
 		}
-		tokenarray = tokensplit(newline);
-		if (tokenarray == NULL)
+		t_array = tokenize(newline);
+		if (t_array == NULL)
 		{
 			free(line);
 			free(newline);
 			return (0);
 		}
-		exec(tokenarray, env, av, line, newline, cmdnum);
-		free_all(line, newline, tokenarray);
+		execute_cmd(t_array, env, av, line, newline, cmdnum);
+		free_all(line, newline, t_array);
 	}
 }
 
 /**
- *tokensplit - splits a line into tokens and stores into a char array
+ *tokenize - splits a line into tokens and stores into a char array
  *@line: the line string to split
  *
  *Return: the array of strings
  */
-char **tokensplit(char *line)
+char **tokenize(char *line)
 {
 	int i = 0;
-	int tokencount = 0;
-	char **tokenarray;
-	char *token, *tokencopy;
+	int t_count = 0;
+	char **t_array;
+	char *token, *t_copy;
 
 	if (line == NULL)
 		return (NULL);
@@ -72,27 +72,27 @@ char **tokensplit(char *line)
 	{
 		if (line[i] != ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'
 				       || line[i + 1] == '\t'))
-			tokencount++;
+			t_count++;
 		i++;
 	}
 
 	i = 0;
-	tokenarray = malloc(sizeof(char *) * (tokencount + 1));
-	if (tokenarray == NULL)
+	t_array = malloc(sizeof(char *) * (t_count + 1));
+	if (t_array == NULL)
 		return (NULL);
-	token = strtok(line, DELIMS);
+	token = strtok(line, DELIMITERS);
 	while (token != NULL)
 	{
-		tokencopy = _strdup(token);
-		if (tokencopy == NULL)
+		t_copy = _strdup(token);
+		if (t_copy == NULL)
 		{
-			free(tokenarray);
+			free(t_array);
 			return (NULL);
 		}
-		*(tokenarray + i) = tokencopy;
-		token = strtok(NULL, DELIMS);
+		*(t_array + i) = t_copy;
+		token = strtok(NULL, DELIMITERS);
 		i++;
 	}
-	*(tokenarray + i) = NULL;
-	return (tokenarray);
+	*(t_array + i) = NULL;
+	return (t_array);
 }

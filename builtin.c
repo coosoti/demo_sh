@@ -1,7 +1,7 @@
 #include "holberton.h"
 
 /**
- *exit_op - handles exit builtin
+ *exit_handler - handles exit builtin
  *@array: the array of strings to execute
  *@line: line of user-entered input
  *@newline: user-entered lined with newline truncated
@@ -9,7 +9,7 @@
  *
  *Return: 0 upon success, or some specific exit code specified by user
  */
-int exit_op(char **array, char *line, char *newline, int cdnum)
+int exit_handler(char **array, char *line, char *newline, int cdnum)
 {
 	int num, j = 0;
 	char *cmdnum;
@@ -25,7 +25,7 @@ int exit_op(char **array, char *line, char *newline, int cdnum)
 		num = _atoi(array[1]);
 		if (num == -1)
 		{
-			cmdnum = printint(cdnum);
+			cmdnum = print_int(cdnum);
 			write(STDERR_FILENO, "./hsh: ", 7);
 			write(STDERR_FILENO, cmdnum, _strlen(cmdnum));
 			write(STDERR_FILENO, ": exit: Illegal number: ", 24);
@@ -40,13 +40,13 @@ int exit_op(char **array, char *line, char *newline, int cdnum)
 	}
 }
 /**
- *cd_op - hands the cd builtin
+ *cd_handler - hands the cd builtin
  *@array: the array of command line strings
  *@env: the environment variable
  *
  *Return: 0 upon success
  */
-int cd_op(char **array, char **env)
+int cd_handler(char **array, char **env)
 {
 	int i = 0;
 	char cwd[1024];
@@ -67,7 +67,7 @@ int cd_op(char **array, char **env)
 			i++;
 		cwd[i++] = '/';
 		cwd[i] = '\0';
-		newdir = str_concat(cwd, array[1]);
+		newdir = _strconcat(cwd, array[1]);
 		if (newdir == NULL)
 			return (0);
 		if (chdir(newdir) == -1)
@@ -80,12 +80,12 @@ int cd_op(char **array, char **env)
 	return (0);
 }
 /**
- *env_op - handles env builtin
+ *env_handler - handles env builtin
  *@env: environment variable
  *
  *Return: 0 on success
  */
-int env_op(char **env)
+int env_handler(char **env)
 {
 	int i = 0, length = 0;
 
@@ -100,7 +100,7 @@ int env_op(char **env)
 }
 
 /**
- *check_builtins - implement exit, buit-in, that exits the shell
+ *checkBuiltins - implement exit, buit-in, that exits the shell
  *@ar: the array of strings to execute
  *@env: the environment variable
  *@line: user-entered input
@@ -109,18 +109,18 @@ int env_op(char **env)
  *
  *Return: 0 when successfully running a builtin, 1 when builtin not found
  */
-int check_builtins(char **ar, char **env, char *line, char *newline, int cdnum)
+int checkBuiltins(char **ar, char **env, char *line, char *newline, int cdnum)
 {
 	if (ar == NULL || *ar == NULL)
 		return (1);
 	if (env == NULL || *env == NULL)
 		return (1);
 	if (_strcmp((ar[0]), "exit") == 0)
-		return (exit_op(ar, line, newline, cdnum));
+		return (exit_handler(ar, line, newline, cdnum));
 	else if (_strcmp((ar[0]), "cd") == 0)
-		return (cd_op(ar, env));
+		return (cd_handler(ar, env));
 	else if (_strcmp((ar[0]), "env") == 0)
-		return (env_op(env));
+		return (env_handler(env));
 	else
 		return (1);
 }

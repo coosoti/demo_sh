@@ -1,22 +1,22 @@
 #include "holberton.h"
 /**
- *create_ll - creates an empty linked list the size of the path variable
+ *create_linkedt - creates an empty linked list the size of the path variable
  *@str: the PATH variable
  *
  *Return: a pointer to the empty array
  */
-path_t *create_ll(char *str)
+linked_t *create_linkedt(char *str)
 {
 	int i = 0;
 	int nodes = 1;
-	path_t *node, *head, *tmp, *end;
+	linked_t *node, *head, *tmp, *end;
 
-	tmp = malloc(sizeof(path_t));
+	tmp = malloc(sizeof(linked_t));
 	if (tmp == NULL)
 		return (NULL);
 	head = tmp;
 
-	end = malloc(sizeof(path_t));
+	end = malloc(sizeof(linked_t));
 	if (end == NULL)
 	{
 		free(tmp);
@@ -33,7 +33,7 @@ path_t *create_ll(char *str)
 
 	while ((nodes - 2) > 0)
 	{
-		node = malloc(sizeof(path_t));
+		node = malloc(sizeof(linked_t));
 		if (node == NULL)
 		{
 			free(tmp);
@@ -48,15 +48,15 @@ path_t *create_ll(char *str)
 	return (head);
 }
 /**
- *fill_list - fills an empty linked list with PATH variable contents
+ *addnodes_list - fills an empty linked list with PATH variable contents
  *@str: the PATH variable
  *@list: pointer to the empty linked list
  *
  *Return: pointer to the filled linked list
  */
-path_t *fill_list(char *str, path_t *list)
+linked_t *addnodes_list(char *str, linked_t *list)
 {
-	path_t *ptr, *head;
+	linked_t *ptr, *head;
 	char *dir;
 	int i = 0, j = 0, stcnt = 0, dirlen = 0;
 
@@ -137,7 +137,7 @@ char *_getenv(const char *name, char **env)
 char *path_handler(char *str, char **env)
 {
 	char *path, *concat;
-	path_t *list, *tmp;
+	linked_t *list, *tmp;
 	struct stat st;
 
 	if (str == NULL || env == NULL || *env == NULL)
@@ -148,20 +148,20 @@ char *path_handler(char *str, char **env)
 		write(STDERR_FILENO, "PATH not found", 14);
 		_exit(0);
 	}
-	list = create_ll(path);
+	list = create_linkedt(path);
 	if (list == NULL)
 	{
 		write(STDERR_FILENO, "Issues with PATH", 16);
 		_exit(0);
 	}
-	list = fill_list(path, list);
+	list = addnodes_list(path, list);
 	tmp = list;
 	while (tmp != NULL)
 	{
 		if (path[0] == ':')
-			concat = str_concat("./", str);
+			concat = _strconcat("./", str);
 		else
-			concat = str_concat(tmp->directory, str);
+			concat = _strconcat(tmp->directory, str);
 		if (concat == NULL)
 			return (NULL);
 		if (stat(concat, &st) == 0 && access(concat, X_OK) == 0)

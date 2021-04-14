@@ -1,11 +1,11 @@
 #include "holberton.h"
 
 /**
- *printprompt - prints the shell prompt
+ *shellPrompt - prints the shell prompt
  *
  *Return: void
  */
-void printprompt(void)
+void shellPrompt(void)
 {
 	write(STDOUT_FILENO, "$ ", 2);
 }

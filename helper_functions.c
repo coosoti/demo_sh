@@ -77,13 +77,13 @@ int _strlen(char *buf)
 	return (i);
 }
 /**
- *str_concat - concatenates two strings
+ *_strconcat - concatenates two strings
  *@s1: first string
  *@s2: second string to concatenate to first
  *
  *Return: pointer to concatenated string
  */
-char *str_concat(char *s1, char *s2)
+char *_strconcat(char *s1, char *s2)
 {
 	int lengths1 = 0;
 	int lengths2 = 0;
@@ -115,17 +115,17 @@ char *str_concat(char *s1, char *s2)
 		return (NULL);
 	}
 
-	return (_concat(concatenate, s1, s2));
+	return (_concatenate(concatenate, s1, s2));
 }
 /**
- *_concat - concatenates two strings
+ *_concatenate - concatenates two strings
  *@concatenate: memory space to concatenate the strings
  *@s1: string 1
  *@s2: string 2
  *
  *Return: pointer to concatenated space
  */
-char *_concat(char *concatenate, char *s1, char *s2)
+char *_concatenate(char *concatenate, char *s1, char *s2)
 {
 	int concatcounter = 0;
 	int stringcounter = 0;
